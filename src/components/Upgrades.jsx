@@ -1,18 +1,35 @@
 import StoreButton from "./StoreButton";
 // A sintaxe com { } se chama "desestruturação", é um atalho.
-function Upgrades({ upgradeClick2xV1, buyUpgradeClick2xV1, atp }) {
+function Upgrades({ tieredUpgrades, onBuyTieredUpgrades, constructions, atp }) {
+  const availableUpgrades = tieredUpgrades.filter((upgrade) => {
+    // Condição 1: Se o upgrade já foi comprado, nós o ignoramos (retornando false).
+    if (upgrade.purchased) {
+      return false;
+    }
+    // Condição 2: Agora, verificamos o unlockThreshold.
+    const targetConstruction = constructions.find(
+      (c) => c.id === upgrade.targetId
+    );
+    if (!targetConstruction) {
+      return false;
+    }
+    return targetConstruction.count >= upgrade.unlockThreshold;
+  });
+
   return (
     <div className="upgrade">
       <h3>Upgrades</h3>
-      {!upgradeClick2xV1 && (
+
+      {availableUpgrades.map((upgrade) => (
         <StoreButton
-          title="Produzir mais energia!"
-          description="Dobra o valor do click"
-          price={200}
-          onClick={buyUpgradeClick2xV1}
-          disabled={atp < 200}
+          key={upgrade.id} // Chave especial para o React
+          title={upgrade.name}
+          description={upgrade.description}
+          price={upgrade.price}
+          onClick={() => onBuyTieredUpgrades(upgrade.id)} // Passa o ID do upgrade para a função de compra
+          disabled={atp < upgrade.price}
         />
-      )}
+      ))}
     </div>
   );
 }

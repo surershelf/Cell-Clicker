@@ -1,51 +1,21 @@
 import StoreButton from "./StoreButton";
 
-function Constructions({
-  atp,
-  ribosPrice,
-  buyRibossomo,
-  ribosValue,
-  mitPrice,
-  buyMit,
-  mitValue,
-  relPrice,
-  buyRel,
-  relValue,
-  rerPrice,
-  buyRer,
-  rerValue,
-}) {
+function Constructions({ atp, items, onBuy }) {
   return (
     <div className="contrucao">
       <h3>Construções</h3>
-      <StoreButton
-        title="Produzir Ribossomo"
-        description={`+${ribosValue} ATP por segundo`}
-        price={ribosPrice}
-        onClick={buyRibossomo}
-        disabled={atp < ribosPrice}
-      />
-      <StoreButton
-        title="Produzir Mitocôndria"
-        description={`+${mitValue} ATP por segundo`}
-        price={mitPrice}
-        onClick={buyMit}
-        disabled={atp < mitPrice}
-      />
-      <StoreButton
-        title="Produzir Retículo Endoplasmatico Liso"
-        description={`+${relValue} ATP por segundo`}
-        price={relPrice}
-        onClick={buyRel}
-        disabled={atp < relPrice}
-      />
-      <StoreButton
-        title="Produzir Retículo Endoplasmático Rugoso"
-        description={`+${rerValue} ATP por segundo`}
-        price={rerPrice}
-        onClick={buyRer}
-        disabled={atp < rerPrice}
-      />
+      {/* Ele percorre cada "item" no array "items" e cria um StoreItem para ele */}
+      {items.map((item) => (
+        <StoreButton
+          key={item.id}
+          title={`Produzir ${item.name}`}
+          description={`+${item.value} ATP por segundo`}
+          count={item.count}
+          price={item.price}
+          onClick={() => onBuy(item.id)} // Quando clicado, chama a função onBuy com o id do item
+          disabled={atp < item.price}
+        />
+      ))}
     </div>
   );
 }
