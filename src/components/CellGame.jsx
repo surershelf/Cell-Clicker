@@ -4,10 +4,10 @@ import Constructions from "./Constructions";
 
 function CellGame() {
   //const dos clicks
-  const [atp, setAtp] = useState(0);
+  const [atp, setAtp] = useState(100);
 
   const [gameStats, setGameStats] = useState([
-    { id: "CLICK", value: 1, bonus: 1 },
+    { id: "CLICK",count:0 ,value: 1, bonus: 1 },
     { id: "PASSIVE_INCOME", value: 0, bonus: 1 },
   ]);
 
@@ -15,12 +15,116 @@ function CellGame() {
   const passiveIncomeStat = gameStats.find(
     (stat) => stat.id === "PASSIVE_INCOME"
   );
+  
 
   //upgrades de tiers
   const [tieredUpgrades, setTieredUpgrades] = useState([
     // ==================================================
     // Upgrades para PowerClick (targetId: "CLICK")
     // ==================================================
+    {
+      id: 801,
+      name: "Ligação Enzimática Acelerada",
+      description: "Dobra o poder de CLICK",
+      price: 300,
+      targetId: "CLICK",
+      unlockThreshold: 100,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
+    {
+      id: 802,
+      name: "Canal Iônico Ativo",
+      description: "Dobra o poder de CLICK",
+      price: 3000,
+      targetId: "CLICK",
+      unlockThreshold: 1000,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
+    {
+      id: 803,
+      name: "Gatilho Neuroquímico",
+      description: "Dobra o poder de CLICK",
+      price: 30000,
+      targetId: "CLICK",
+      unlockThreshold: 10000,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
+    {
+      id: 804,
+      name: "Ativação de Sinalização Celular",
+      description: "Dobra o poder de CLICK",
+      price: 300000,
+      targetId: "CLICK",
+      unlockThreshold: 100000,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
+    {
+      id: 805,
+      name: "Energia de Fosfato Reforçada",
+      description: "Dobra o poder de CLICK",
+      price: 3000000,
+      targetId: "CLICK",
+      unlockThreshold: 1000000,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
+    // ==================================================
+    // Upgrades para RENDA PASSIVA (targetId: "PASSIVE_INCOME")
+    // ==================================================
+    {
+      id: 901,
+      name: "Cadeia Respiratória Aprimorada",
+      description: "Dobra tudo!!!",
+      price: 500000,
+      targetId: "PASSIVE_INCOME",
+      unlockThreshold: 50000,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
+    {
+      id: 902,
+      name: "Síntese de ATP Intensificada",
+      description: "Dobra tudo!!!",
+      price: 2500000,
+      targetId: "PASSIVE_INCOME",
+      unlockThreshold: 250000,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
+    {
+      id: 903,
+      name: "Transportadores de Elétrons Otimizados",
+      description: "Dobra tudo!!!",
+      price: 100000000,
+      targetId: "PASSIVE_INCOME",
+      unlockThreshold: 1000000,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
+    {
+      id: 905,
+      name: "Cooperação Organelar",
+      description: "Dobra tudo!!!",
+      price: 10000000000,
+      targetId: "PASSIVE_INCOME",
+      unlockThreshold: 10000000000,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
+    {
+      id: 905,
+      name: "Eficiência Bioenergética Máxima",
+      description: "Dobra tudo!!!",
+      price: 1000000000000,
+      targetId: "PASSIVE_INCOME",
+      unlockThreshold: 1000000000000,
+      bonusMultiplier: 2,
+      purchased: false,
+    },
 
     // ==================================================
     // Upgrades para Ribossomos (targetId: 1)
@@ -422,6 +526,15 @@ function CellGame() {
   function handleCellClick() {
     const clickPower = clickStat.value * clickStat.bonus;
     setAtp(atp + clickPower);
+
+    const newGameStat = gameStats.map((stat) => {
+      if (stat.id === "CLICK") {
+        return { ...stat, count: stat.count + 1 };
+      }
+      return stat;
+    });
+    setGameStats(newGameStat);
+
   }
 
   function buyConstruction(id) {
@@ -442,44 +555,61 @@ function CellGame() {
     }
   }
 
-  function buyTieredUpgrades(id) {
-    const upgrade = tieredUpgrades.find((t) => t.id === id);
+ function buyTieredUpgrades(id) {
+  const upgrade = tieredUpgrades.find((t) => t.id === id);
 
-    if (atp >= upgrade.price) {
-      setAtp(atp - upgrade.price);
+  if (atp >= upgrade.price) {
+    setAtp(atp - upgrade.price);
 
-      const newConstrucions = constructions.map((c) => {
-        if (c.id === upgrade.targetId) {
-          return { ...c, bonus: c.bonus * upgrade.bonusMultiplier };
-        }
-        return c;
-      });
+    // marca upgrade como comprado
+    const newUpgrade = tieredUpgrades.map((t) =>
+      t.id === id ? { ...t, purchased: true } : t
+    );
 
-      const newUpgrade = tieredUpgrades.map((t) => {
-        if (t.id === id) {
-          return { ...t, purchased: true };
-        } else {
-          return t;
-        }
-      });
-
-      setTieredUpgrades(newUpgrade);
+    if (upgrade.targetId === "CLICK") {
+      const newClickStats = gameStats.map((stat) =>
+        stat.id === "CLICK"
+          ? { ...stat, bonus: stat.bonus * upgrade.bonusMultiplier }
+          : stat
+      );
+      setGameStats(newClickStats);
+    } else if (upgrade.targetId === "PASSIVE_INCOME") {
+      const newGameStats = gameStats.map((stat) =>
+        stat.id === "PASSIVE_INCOME"
+          ? { ...stat, bonus: stat.bonus * upgrade.bonusMultiplier }
+          : stat
+      );
+      setGameStats(newGameStats);
+    } else {
+      const newConstrucions = constructions.map((c) =>
+        c.id === upgrade.targetId
+          ? { ...c, bonus: c.bonus * upgrade.bonusMultiplier }
+          : c
+      );
       setConstructions(newConstrucions);
     }
-  }
 
+    setTieredUpgrades(newUpgrade);
+  }
+}
+    
   useEffect(() => {
-    const totalAptPerSecond = constructions.reduce((total, c) => {
+    const passiveIncome = gameStats.find(
+      (stat) => stat.id === "PASSIVE_INCOME"
+    );
+
+    const baseIncome = constructions.reduce((total, c) => {
       return total + c.count * c.value * c.bonus;
     }, 0);
     const newGameStats = gameStats.map((stat) => {
       if (stat.id === "PASSIVE_INCOME") {
-        return { ...stat, value: totalAptPerSecond };
+        return { ...stat, value: baseIncome };
       }
       return stat;
     });
     setGameStats(newGameStats);
   }, [constructions]);
+  
 
   useEffect(() => {
     // Inicia um intervalo que vai executar o código a cada 1000 milissegundos (1 segundo).
@@ -517,13 +647,15 @@ function CellGame() {
         </button>
       </div>
       <hr />
-      <Constructions atp={atp} items={constructions} onBuy={buyConstruction} />
+      <Constructions atp={atp} items={constructions} onBuy={buyConstruction} gameStats={gameStats} />
       <hr />
       <Upgrades
         atp={atp}
         constructions={constructions}
         tieredUpgrades={tieredUpgrades}
         onBuyTieredUpgrades={buyTieredUpgrades}
+        passiveIncomeStat={passiveIncomeStat}
+        clickStat={clickStat}
       />
     </div>
   );
