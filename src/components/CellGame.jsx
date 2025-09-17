@@ -4,10 +4,12 @@ import Constructions from "./Constructions";
 
 function CellGame() {
   //const dos clicks
-  const [atp, setAtp] = useState(100);
+  const [atp, setAtp] = useState(0);
+  //contar o total de atp gerado no game
+  const [totAtp, setTotAtp] = useState(0);
 
   const [gameStats, setGameStats] = useState([
-    { id: "CLICK",count:0 ,value: 1, bonus: 1 },
+    { id: "CLICK", count: 0, value: 1, bonus: 1 },
     { id: "PASSIVE_INCOME", value: 0, bonus: 1 },
   ]);
 
@@ -15,7 +17,6 @@ function CellGame() {
   const passiveIncomeStat = gameStats.find(
     (stat) => stat.id === "PASSIVE_INCOME"
   );
-  
 
   //upgrades de tiers
   const [tieredUpgrades, setTieredUpgrades] = useState([
@@ -526,6 +527,7 @@ function CellGame() {
   function handleCellClick() {
     const clickPower = clickStat.value * clickStat.bonus;
     setAtp(atp + clickPower);
+    setTotAtp(totAtp + clickPower);
 
     const newGameStat = gameStats.map((stat) => {
       if (stat.id === "CLICK") {
@@ -534,7 +536,6 @@ function CellGame() {
       return stat;
     });
     setGameStats(newGameStat);
-
   }
 
   function buyConstruction(id) {
@@ -555,44 +556,44 @@ function CellGame() {
     }
   }
 
- function buyTieredUpgrades(id) {
-  const upgrade = tieredUpgrades.find((t) => t.id === id);
+  function buyTieredUpgrades(id) {
+    const upgrade = tieredUpgrades.find((t) => t.id === id);
 
-  if (atp >= upgrade.price) {
-    setAtp(atp - upgrade.price);
+    if (atp >= upgrade.price) {
+      setAtp(atp - upgrade.price);
 
-    // marca upgrade como comprado
-    const newUpgrade = tieredUpgrades.map((t) =>
-      t.id === id ? { ...t, purchased: true } : t
-    );
+      // marca upgrade como comprado
+      const newUpgrade = tieredUpgrades.map((t) =>
+        t.id === id ? { ...t, purchased: true } : t
+      );
 
-    if (upgrade.targetId === "CLICK") {
-      const newClickStats = gameStats.map((stat) =>
-        stat.id === "CLICK"
-          ? { ...stat, bonus: stat.bonus * upgrade.bonusMultiplier }
-          : stat
-      );
-      setGameStats(newClickStats);
-    } else if (upgrade.targetId === "PASSIVE_INCOME") {
-      const newGameStats = gameStats.map((stat) =>
-        stat.id === "PASSIVE_INCOME"
-          ? { ...stat, bonus: stat.bonus * upgrade.bonusMultiplier }
-          : stat
-      );
-      setGameStats(newGameStats);
-    } else {
-      const newConstrucions = constructions.map((c) =>
-        c.id === upgrade.targetId
-          ? { ...c, bonus: c.bonus * upgrade.bonusMultiplier }
-          : c
-      );
-      setConstructions(newConstrucions);
+      if (upgrade.targetId === "CLICK") {
+        const newClickStats = gameStats.map((stat) =>
+          stat.id === "CLICK"
+            ? { ...stat, bonus: stat.bonus * upgrade.bonusMultiplier }
+            : stat
+        );
+        setGameStats(newClickStats);
+      } else if (upgrade.targetId === "PASSIVE_INCOME") {
+        const newGameStats = gameStats.map((stat) =>
+          stat.id === "PASSIVE_INCOME"
+            ? { ...stat, bonus: stat.bonus * upgrade.bonusMultiplier }
+            : stat
+        );
+        setGameStats(newGameStats);
+      } else {
+        const newConstrucions = constructions.map((c) =>
+          c.id === upgrade.targetId
+            ? { ...c, bonus: c.bonus * upgrade.bonusMultiplier }
+            : c
+        );
+        setConstructions(newConstrucions);
+      }
+
+      setTieredUpgrades(newUpgrade);
     }
-
-    setTieredUpgrades(newUpgrade);
   }
-}
-    
+
   useEffect(() => {
     const passiveIncome = gameStats.find(
       (stat) => stat.id === "PASSIVE_INCOME"
@@ -609,7 +610,6 @@ function CellGame() {
     });
     setGameStats(newGameStats);
   }, [constructions]);
-  
 
   useEffect(() => {
     // Inicia um intervalo que vai executar o código a cada 1000 milissegundos (1 segundo).
@@ -618,6 +618,10 @@ function CellGame() {
       // Usamos a forma de callback (currentAtp => ...) para garantir que
       // sempre pegamos o valor mais recente de ATP e evitamos bugs.
       setAtp(
+        (currentAtp) =>
+          currentAtp + passiveIncomeStat.value * passiveIncomeStat.bonus
+      );
+      setTotAtp(
         (currentAtp) =>
           currentAtp + passiveIncomeStat.value * passiveIncomeStat.bonus
       );
@@ -635,6 +639,7 @@ function CellGame() {
     <div className="game-container">
       <h1>🔬 Cell Clicker 🔬</h1>
       <h2>Energia (ATP): {atp.toFixed(0)}</h2>
+      <h4>Total de ATP de todo jogo: {totAtp}</h4>
       <p>
         {(passiveIncomeStat.value * passiveIncomeStat.bonus).toFixed(1)} ATP por
         segundo
@@ -647,7 +652,12 @@ function CellGame() {
         </button>
       </div>
       <hr />
-      <Constructions atp={atp} items={constructions} onBuy={buyConstruction} gameStats={gameStats} />
+      <Constructions
+        atp={atp}
+        items={constructions}
+        onBuy={buyConstruction}
+        gameStats={gameStats}
+      />
       <hr />
       <Upgrades
         atp={atp}
