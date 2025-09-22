@@ -582,11 +582,22 @@ function CellGame() {
   const [legacyUpgrades, setLegacyUpgrades] = useState([
     {
       id: 2001,
-      name: "Mão de Midas Genética",
+      name: "Upgrade teste 1",
       description: "Aumenta em 10% a produção de ATP",
       price: 1,
       targetId: "PASSIVE_INCOME",
-      bonusMultiplier: 0.1,
+      bonusMultiplier: 1.1,
+      requires: null,
+      purchased: false,
+    },
+    {
+      id: 2002,
+      name: "Upgrade teste 2",
+      description: "Aumenta em 10% a produção de ATP",
+      price: 1,
+      targetId: "PASSIVE_INCOME",
+      bonusMultiplier: 1.1,
+      requires: 2001,
       purchased: false,
     },
   ]);
@@ -748,8 +759,6 @@ function CellGame() {
     }
   }
 
-  // Dentro do seu CellGame.jsx
-
   function buyLegacyUpgrade(id) {
     const legacyUpgrade = legacyUpgrades.find((l) => l.id === id);
 
@@ -893,6 +902,8 @@ function CellGame() {
         <LegacyTree
           onReturnClick={handleReturnToGame}
           legacyStat={legacyStat}
+          legacyUpgrades={legacyUpgrades}
+          buyLegacyUpgrade={buyLegacyUpgrade}
         />
       )}
     </>
