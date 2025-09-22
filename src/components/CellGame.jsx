@@ -4,11 +4,51 @@ import Constructions from "./Constructions";
 import LegacyTree from "./LegacyTree";
 
 const initialConstructions = [
-  { id: 1, name: "Ribossomo", count: 0, price: 10, value: 1, bonus: 1 },
-  { id: 2, name: "Mitocôndria", count: 0, price: 100, value: 10, bonus: 1 },
-  { id: 3, name: "REL", count: 0, price: 1000, value: 25, bonus: 1 },
-  { id: 4, name: "RER", count: 0, price: 2500, value: 60, bonus: 1 },
-  { id: 5, name: "Lisossomo", count: 0, price: 5300, value: 110, bonus: 1 },
+  {
+    id: 1,
+    name: "Ribossomo",
+    count: 0,
+    price: 10,
+    value: 1,
+    bonus: 1,
+    legacyBonus: 1,
+  },
+  {
+    id: 2,
+    name: "Mitocôndria",
+    count: 0,
+    price: 100,
+    value: 10,
+    bonus: 1,
+    legacyBonus: 1,
+  },
+  {
+    id: 3,
+    name: "REL",
+    count: 0,
+    price: 1000,
+    value: 25,
+    bonus: 1,
+    legacyBonus: 1,
+  },
+  {
+    id: 4,
+    name: "RER",
+    count: 0,
+    price: 2500,
+    value: 60,
+    bonus: 1,
+    legacyBonus: 1,
+  },
+  {
+    id: 5,
+    name: "Lisossomo",
+    count: 0,
+    price: 5300,
+    value: 110,
+    bonus: 1,
+    legacyBonus: 1,
+  },
   {
     id: 6,
     name: "Peroxissomos",
@@ -16,8 +56,17 @@ const initialConstructions = [
     price: 7000,
     value: 200,
     bonus: 1,
+    legacyBonus: 1,
   },
-  { id: 7, name: "Núcleo", count: 0, price: 10000, value: 500, bonus: 1 },
+  {
+    id: 7,
+    name: "Núcleo",
+    count: 0,
+    price: 10000,
+    value: 500,
+    bonus: 1,
+    legacyBonus: 1,
+  },
 ];
 const initialTieredUpgrades = [
   // ==================================================
@@ -509,9 +558,9 @@ const initialTieredUpgrades = [
 function CellGame() {
   const [currentView, setCurrentView] = useState("game");
   const [gameStats, setGameStats] = useState([
-    { id: "ATP", totAmount: 0, value: 0 },
-    { id: "CLICK", count: 0, value: 500000000, bonus: 1 },
-    { id: "PASSIVE_INCOME", value: 0, bonus: 1 },
+    { id: "ATP", totAmount: 0, value: 0, legacyBonus: 1 },
+    { id: "CLICK", count: 0, value: 500000000, bonus: 1, legacyBonus: 1 },
+    { id: "PASSIVE_INCOME", value: 0, bonus: 1, legacyBonus: 1 },
     { id: "LEGACY_POINTS", totAmount: 0, value: 0 },
   ]);
 
@@ -530,6 +579,17 @@ function CellGame() {
 
   //const das constuçoes
   const [constructions, setConstructions] = useState(initialConstructions);
+  const [legacyUpgrades, setLegacyUpgrades] = useState([
+    {
+      id: 2001,
+      name: "Mão de Midas Genética",
+      description: "Aumenta em 10% a produção de ATP",
+      price: 1,
+      targetId: "PASSIVE_INCOME",
+      bonusMultiplier: 0.1,
+      purchased: false,
+    },
+  ]);
 
   function gainAtp(amount) {
     setGameStats((currentGameStats) =>
@@ -577,6 +637,17 @@ function CellGame() {
     }
   }
 
+  function spendLegacyPoints(amount) {
+    setGameStats((currentGameStats) =>
+      currentGameStats.map((stat) => {
+        if (stat.id === "LEGACY_POINTS") {
+          return { ...stat, value: stat.value - amount };
+        }
+        return stat;
+      })
+    );
+  }
+
   function handleLegacyReset() {
     const userConfirmed = window.confirm(
       "Você tem certeza que quer resetar para ganhar pontos de Legado?"
@@ -610,7 +681,8 @@ function CellGame() {
     setCurrentView("game");
   }
   function handleCellClick() {
-    const clickPower = clickStat.value * clickStat.bonus;
+    const clickPower =
+      clickStat.value * clickStat.bonus * clickStat.legacyBonus;
     gainAtp(clickPower);
   }
 
@@ -646,14 +718,20 @@ function CellGame() {
       if (upgrade.targetId === "CLICK") {
         const newClickStats = gameStats.map((stat) =>
           stat.id === "CLICK"
-            ? { ...stat, bonus: stat.bonus * upgrade.bonusMultiplier }
+            ? {
+                ...stat,
+                bonus: stat.bonus * upgrade.bonusMultiplier,
+              }
             : stat
         );
         setGameStats(newClickStats);
       } else if (upgrade.targetId === "PASSIVE_INCOME") {
         const newGameStats = gameStats.map((stat) =>
           stat.id === "PASSIVE_INCOME"
-            ? { ...stat, bonus: stat.bonus * upgrade.bonusMultiplier }
+            ? {
+                ...stat,
+                bonus: stat.bonus * upgrade.bonusMultiplier,
+              }
             : stat
         );
         setGameStats(newGameStats);
@@ -670,13 +748,61 @@ function CellGame() {
     }
   }
 
+  // Dentro do seu CellGame.jsx
+
+  function buyLegacyUpgrade(id) {
+    const legacyUpgrade = legacyUpgrades.find((l) => l.id === id);
+
+    if (legacyStat.value >= legacyUpgrade.price) {
+      const newLegacyUpgrades = legacyUpgrades.map((l) =>
+        l.id === id ? { ...l, purchased: true } : l
+      );
+      setLegacyUpgrades(newLegacyUpgrades);
+
+      if (
+        legacyUpgrade.targetId === "CLICK" ||
+        legacyUpgrade.targetId === "PASSIVE_INCOME"
+      ) {
+        // 5A. Se afeta um stat global, fazemos uma ÚNICA atualização no gameStats
+        // para gastar os pontos E aplicar o bônus permanente.
+        setGameStats((currentGameStats) =>
+          currentGameStats.map((stat) => {
+            if (stat.id === "LEGACY_POINTS") {
+              return { ...stat, value: stat.value - legacyUpgrade.price };
+            }
+            if (stat.id === legacyUpgrade.targetId) {
+              return {
+                ...stat,
+                legacyBonus: stat.legacyBonus * legacyUpgrade.bonusMultiplier,
+              };
+            }
+            return stat;
+          })
+        );
+      } else {
+        // 5B. Se afeta uma construção, primeiro gastamos os pontos.
+        spendLegacyPoints(legacyUpgrade.price);
+        // E depois atualizamos o estado das construções para aplicar o bônus permanente.
+        const newConstructions = constructions.map((c) =>
+          c.id === legacyUpgrade.targetId
+            ? {
+                ...c,
+                legacyBonus: c.legacyBonus * legacyUpgrade.bonusMultiplier,
+              }
+            : c
+        );
+        setConstructions(newConstructions);
+      }
+    }
+  }
+
   useEffect(() => {
     checkForLegacyPoints();
   }, [atpStat.totAmount]);
 
   useEffect(() => {
     const baseIncome = constructions.reduce((total, c) => {
-      return total + c.count * c.value * c.bonus;
+      return total + c.count * c.value * c.bonus * c.legacyBonus;
     }, 0);
     setGameStats((prevGameStats) =>
       prevGameStats.map((stat) => {
@@ -690,7 +816,9 @@ function CellGame() {
 
   useEffect(() => {
     const passiveIncomePerSecond =
-      passiveIncomeStat.value * passiveIncomeStat.bonus;
+      passiveIncomeStat.value *
+      passiveIncomeStat.bonus *
+      passiveIncomeStat.legacyBonus;
     // Inicia um intervalo que vai executar o código a cada 1000 milissegundos (1 segundo).
     const intervalId = setInterval(() => {
       if (passiveIncomePerSecond > 0) {
@@ -704,7 +832,11 @@ function CellGame() {
 
     // Este useEffect "observa" a variável atpPerSecond.
     // Se o valor dela mudar, o timer antigo é destruído e um novo é criado com a velocidade atualizada.
-  }, [passiveIncomeStat.value, passiveIncomeStat.bonus]);
+  }, [
+    passiveIncomeStat.value,
+    passiveIncomeStat.bonus,
+    passiveIncomeStat.legacyBonus,
+  ]);
 
   return (
     <>
@@ -714,8 +846,12 @@ function CellGame() {
           <h2>Energia (ATP): {atpStat.value.toFixed(0)}</h2>
           <h4>Total de ATP de todo jogo: {atpStat.totAmount.toFixed(0)}</h4>
           <p>
-            {(passiveIncomeStat.value * passiveIncomeStat.bonus).toFixed(1)} ATP
-            por segundo
+            {(
+              passiveIncomeStat.value *
+              passiveIncomeStat.bonus *
+              passiveIncomeStat.legacyBonus
+            ).toFixed(1)}{" "}
+            ATP por segundo
           </p>
 
           <div>
@@ -731,7 +867,9 @@ function CellGame() {
           <div className="celula">
             <button onClick={handleCellClick}>
               <p>Clique em mim!</p>
-              <span>+{clickStat.value * clickStat.bonus}</span>
+              <span>
+                +{clickStat.value * clickStat.bonus * clickStat.legacyBonus}
+              </span>
             </button>
           </div>
           <hr />

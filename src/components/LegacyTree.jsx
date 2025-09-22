@@ -1,4 +1,4 @@
-function LegacyTree({ onReturnClick, legacyStat }) {
+function LegacyTree({ onReturnClick, legacyStat, buyLegacyUpgrade }) {
   return (
     <div>
       <h1>Legacy Tree</h1>
