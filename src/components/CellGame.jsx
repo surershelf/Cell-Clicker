@@ -554,6 +554,34 @@ const initialTieredUpgrades = [
     purchased: false,
   },
 ];
+const possibleBonus = [
+  {
+    id: 7000,
+    name: "Frenesi de Clicks",
+    description: "Aumenta o poder de click em 7X",
+    type: "TEMPORARY_BONUS",
+    targetId: "CLICK",
+    multiplier: 7,
+    duration: 13000,
+  },
+  {
+    id: 7001,
+    name: "Frenesi de ATP",
+    description: "Aumenta o valor dos ATPs passivos em 7x",
+    type: "TEMPORARY_BONUS",
+    targetId: "PASSIVE_INCOME",
+    multiplier: 7,
+    duration: 60000,
+  },
+  {
+    id: 7003,
+    name: "ATP Bônus",
+    description: "Dá um bônus de ATP",
+    type: "INSTANT_ATP_BONUS",
+    targetId: "ATP",
+    gain: 0.5,
+  },
+];
 
 function CellGame() {
   const [currentView, setCurrentView] = useState("game");
@@ -579,6 +607,7 @@ function CellGame() {
 
   //const das constuçoes
   const [constructions, setConstructions] = useState(initialConstructions);
+
   const [legacyUpgrades, setLegacyUpgrades] = useState([
     {
       id: 2001,
@@ -601,6 +630,17 @@ function CellGame() {
       purchased: false,
     },
   ]);
+
+  const [bonusCell, setBonusCell] = useState({
+    isVisible: false,
+
+    position: { top: "50%", left: "50%" },
+
+    stats: {
+      timesAppeared: 0,
+      timesClicked: 0,
+    },
+  });
 
   function gainAtp(amount) {
     setGameStats((currentGameStats) =>
@@ -695,6 +735,48 @@ function CellGame() {
     const clickPower =
       clickStat.value * clickStat.bonus * clickStat.legacyBonus;
     gainAtp(clickPower);
+  }
+  function handleBonusCellClick() {
+    setBonusCell((prev) => ({
+      ...prev,
+      isVisible: false,
+      stats: { ...prev.stats, clicks: prev.stats.clicks + 1 },
+    }));
+    const randomIndex = Math.floor(Math.random() * possibleBonus.length);
+
+    const chosenBonus = possibleBonus[randomIndex];
+
+    console.log("Bônus sorteado: ", chosenBonus.name);
+
+    switch (chosenBonus.type) {
+      case "TEMPORARY_BONUS": {
+        setGameStats((prevStats) =>
+          prevStats.map((stat) =>
+            stat.id === chosenBonus.targetId // Usa o targetId para encontrar o stat certo
+              ? { ...stat, bonus: stat.bonus * chosenBonus.multiplier }
+              : stat
+          )
+        );
+        setTimeout(() => {
+          setGameStats((prevStats) =>
+            prevStats.map((stat) =>
+              stat.id === chosenBonus.targetId
+                ? { ...stat, bonus: stat.bonus / chosenBonus.multiplier }
+                : stat
+            )
+          );
+          console.log(`Bônus "${chosenBonus.name}" expirou!`);
+        }, chosenBonus.duration);
+        break;
+      }
+      case "INSTANT_ATP_BONUS": {
+        const atpBonus = atpStat.value * chosenBonus.gain;
+        gainAtp(atpBonus);
+        break;
+      }
+      default:
+        console.log("Tipo de bônus desconhecido: ", chosenBonus.type);
+    }
   }
 
   function buyConstruction(id) {
@@ -805,6 +887,19 @@ function CellGame() {
     }
   }
 
+  function spawnBonusCell() {
+    const top = Math.floor(Math.random() * 90);
+    const left = Math.floor(Math.random() * 90);
+    setBonusCell((prevState) => ({
+      ...prevState,
+      isVisible: true,
+      position: {
+        top: `${top}%`,
+        left: `${left}%`,
+      },
+    }));
+  }
+
   useEffect(() => {
     checkForLegacyPoints();
   }, [atpStat.totAmount]);
@@ -847,10 +942,33 @@ function CellGame() {
     passiveIncomeStat.legacyBonus,
   ]);
 
+  //use effect do cellBonus
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      spawnBonusCell();
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <>
       {currentView === "game" ? (
         <div className="game-container">
+          <div className="cell-bonus">
+            {bonusCell.isVisible && (
+              <button
+                onClick={handleBonusCellClick}
+                className="cell-bonus-button"
+                style={{
+                  position: "absolute",
+                  top: bonusCell.position.top,
+                  left: bonusCell.position.left,
+                }}
+              >
+                🧬
+              </button>
+            )}
+          </div>
           <h1>🔬 Cell Clicker 🔬</h1>
           <h2>Energia (ATP): {atpStat.value.toFixed(0)}</h2>
           <h4>Total de ATP de todo jogo: {atpStat.totAmount.toFixed(0)}</h4>
