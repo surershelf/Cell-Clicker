@@ -2,6 +2,15 @@ import { useEffect, useState } from "react";
 import Upgrades from "./Upgrades";
 import Constructions from "./Constructions";
 import LegacyTree from "./LegacyTree";
+import ATPImg from "../assets/assets-clicker/ATP.png";
+import citImg from "../assets/assets-clicker/citoplasma-removebg-preview.png";
+import riboImg from "../assets/assets-clicker/ribossomo.png";
+import mitImg from "../assets/assets-clicker/mitocondria-removebg-preview.png";
+import CGImg from "../assets/assets-clicker/complexo-de-golgi-removebg-preview.png";
+import nucImg from "../assets/assets-clicker/Nucleo-removebg-preview.png";
+import relImg from "../assets/assets-clicker/rel-removebg-preview.png";
+import rerImg from "../assets/assets-clicker/rer__2_-removebg-preview.png";
+import lisImg from "../assets/assets-clicker/lisossomo-removebg-preview.png";
 
 const initialConstructions = [
   {
@@ -12,6 +21,7 @@ const initialConstructions = [
     value: 1,
     bonus: 1,
     legacyBonus: 1,
+    image: riboImg,
   },
   {
     id: 2,
@@ -21,6 +31,27 @@ const initialConstructions = [
     value: 10,
     bonus: 1,
     legacyBonus: 1,
+    image: mitImg,
+  },
+  {
+    id: 8,
+    name: "Complexo de Golgi",
+    count: 0,
+    price: 1000,
+    value: 25,
+    bonus: 1,
+    legacyBonus: 1,
+    image: CGImg,
+  },
+  {
+    id: 9,
+    name: "Centriolo",
+    count: 0,
+    price: 1000,
+    value: 25,
+    bonus: 1,
+    legacyBonus: 1,
+    image: "../assets/react.svg",
   },
   {
     id: 3,
@@ -30,6 +61,7 @@ const initialConstructions = [
     value: 25,
     bonus: 1,
     legacyBonus: 1,
+    image: relImg,
   },
   {
     id: 4,
@@ -39,6 +71,7 @@ const initialConstructions = [
     value: 60,
     bonus: 1,
     legacyBonus: 1,
+    image: rerImg,
   },
   {
     id: 5,
@@ -48,6 +81,7 @@ const initialConstructions = [
     value: 110,
     bonus: 1,
     legacyBonus: 1,
+    image: lisImg,
   },
   {
     id: 6,
@@ -57,6 +91,7 @@ const initialConstructions = [
     value: 200,
     bonus: 1,
     legacyBonus: 1,
+    image: "../assets/react.svg",
   },
   {
     id: 7,
@@ -66,6 +101,7 @@ const initialConstructions = [
     value: 500,
     bonus: 1,
     legacyBonus: 1,
+    image: nucImg,
   },
 ];
 const initialTieredUpgrades = [
@@ -73,7 +109,7 @@ const initialTieredUpgrades = [
   // Upgrades para PowerClick (targetId: "CLICK")
   // ==================================================
   {
-    id: 801,
+    id: 1201,
     name: "Ligação Enzimática Acelerada",
     description: "Dobra o poder de CLICK",
     price: 300,
@@ -83,7 +119,7 @@ const initialTieredUpgrades = [
     purchased: false,
   },
   {
-    id: 802,
+    id: 1202,
     name: "Canal Iônico Ativo",
     description: "Dobra o poder de CLICK",
     price: 3000,
@@ -93,7 +129,7 @@ const initialTieredUpgrades = [
     purchased: false,
   },
   {
-    id: 803,
+    id: 1203,
     name: "Gatilho Neuroquímico",
     description: "Dobra o poder de CLICK",
     price: 30000,
@@ -103,7 +139,7 @@ const initialTieredUpgrades = [
     purchased: false,
   },
   {
-    id: 804,
+    id: 1204,
     name: "Ativação de Sinalização Celular",
     description: "Dobra o poder de CLICK",
     price: 300000,
@@ -113,7 +149,7 @@ const initialTieredUpgrades = [
     purchased: false,
   },
   {
-    id: 805,
+    id: 1205,
     name: "Energia de Fosfato Reforçada",
     description: "Dobra o poder de CLICK",
     price: 3000000,
@@ -126,7 +162,7 @@ const initialTieredUpgrades = [
   // Upgrades para RENDA PASSIVA (targetId: "PASSIVE_INCOME")
   // ==================================================
   {
-    id: 901,
+    id: 1301,
     name: "Cadeia Respiratória Aprimorada",
     description: "Dobra tudo!!!",
     price: 500000,
@@ -136,7 +172,7 @@ const initialTieredUpgrades = [
     purchased: false,
   },
   {
-    id: 902,
+    id: 1302,
     name: "Síntese de ATP Intensificada",
     description: "Dobra tudo!!!",
     price: 2500000,
@@ -146,7 +182,7 @@ const initialTieredUpgrades = [
     purchased: false,
   },
   {
-    id: 903,
+    id: 1303,
     name: "Transportadores de Elétrons Otimizados",
     description: "Dobra tudo!!!",
     price: 100000000,
@@ -156,7 +192,7 @@ const initialTieredUpgrades = [
     purchased: false,
   },
   {
-    id: 904,
+    id: 1304,
     name: "Cooperação Organelar",
     description: "Dobra tudo!!!",
     price: 10000000000,
@@ -166,7 +202,7 @@ const initialTieredUpgrades = [
     purchased: false,
   },
   {
-    id: 905,
+    id: 1305,
     name: "Eficiência Bioenergética Máxima",
     description: "Dobra tudo!!!",
     price: 1000000000000,
@@ -587,7 +623,7 @@ function CellGame() {
   const [currentView, setCurrentView] = useState("game");
   const [gameStats, setGameStats] = useState([
     { id: "ATP", totAmount: 0, value: 0, legacyBonus: 1 },
-    { id: "CLICK", count: 0, value: 500000000, bonus: 1, legacyBonus: 1 },
+    { id: "CLICK", count: 0, value: 1, bonus: 1, legacyBonus: 1 },
     { id: "PASSIVE_INCOME", value: 0, bonus: 1, legacyBonus: 1 },
     { id: "LEGACY_POINTS", totAmount: 0, value: 0 },
   ]);

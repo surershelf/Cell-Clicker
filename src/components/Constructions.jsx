@@ -1,25 +1,20 @@
-import StoreButton from "./StoreButton";
+import ConstructionButton from "./ConstructionButton";
 
-function Constructions({ atp, items, onBuy, gameStats }) {
-   const passiveIncomeStat = gameStats.find(
-    (stat) => stat.id === "PASSIVE_INCOME"
-  );
-  
+function Constructions({ atp, items, onBuy }) {
   return (
     <div className="contrucao">
       <h3>Construções</h3>
-      {/* Ele percorre cada "item" no array "items" e cria um StoreItem para ele */}
-      {items.map((item) => (
-        <StoreButton
-          key={item.id}
-          title={`Produzir ${item.name}`}
-          description={`+${item.value * item.bonus * passiveIncomeStat.bonus} ATP por segundo`}
-          count={item.count}
-          price={item.price}
-          onClick={() => onBuy(item.id)} // Quando clicado, chama a função onBuy com o id do item
-          disabled={atp < item.price}
-        />
-      ))}
+
+      {/* A "guarda" 'items &&' previne erros se a lista de items demorar a carregar */}
+      {items &&
+        items.map((item) => (
+          <ConstructionButton
+            key={item.id}
+            construction={item} // Esta é a linha que corrige tudo!
+            onBuy={onBuy}
+            isDisabled={atp < item.price}
+          />
+        ))}
     </div>
   );
 }
