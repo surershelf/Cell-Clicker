@@ -1030,7 +1030,7 @@ function CellGame() {
             </button>
           </div>
           <div className="cell-button">
-            <button onClick={handleCellClick}>
+            <button className="cell-button" onClick={handleCellClick}>
               <img src={ATPImg} alt="Célula ATP" className="cell-image" />
             </button>
           </div>

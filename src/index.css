@@ -74,3 +74,35 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+button.cell-button {
+  /* Força a remoção do fundo e da borda da regra geral */
+  background: transparent !important;
+  border: none !important;
+
+  /* Remove o padding da regra geral */
+  padding: 0 !important;
+
+  cursor: pointer;
+  transition: transform 0.1s;
+
+  /* --- Outros --- */
+  position: relative; /* Necessário para posicionar o texto do valor do clique */
+}
+
+/* Esta regra continua igual, para o efeito de clique */
+button.cell-button:active {
+  transform: scale(0.95);
+}
+
+/* A imagem continua a definir o tamanho final */
+.cell-image {
+  width: 200px; /* Você pode mudar este valor para o tamanho que quiser */
+  height: auto;
+  /* IMPORTANTE: Adicione esta linha para evitar que a imagem arraste */
+  -webkit-user-drag: none;
+  user-select: none;
+}
+button.cell-button:focus,
+button.cell-button:focus-visible {
+  outline: none;
+}
