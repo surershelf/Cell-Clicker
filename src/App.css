@@ -40,3 +40,20 @@
 .read-the-docs {
   color: #888;
 }
+.cell-button {
+  background-color: transparent; /* Remove o fundo do botão */
+  border: none; /* Remove a borda do botão */
+  padding: 0;
+  cursor: pointer;
+  position: relative; /* Para posicionar o texto do valor do clique */
+  transition: transform 0.1s; /* Animação suave */
+}
+
+.cell-button:active {
+  transform: scale(0.95); /* Efeito de "pressionar" ao clicar */
+}
+
+.cell-image {
+  width: 200px; /* Ajuste o tamanho como preferir */
+  height: auto;
+}

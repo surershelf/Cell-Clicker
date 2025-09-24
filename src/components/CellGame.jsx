@@ -11,6 +11,8 @@ import nucImg from "../assets/assets-clicker/Nucleo-removebg-preview.png";
 import relImg from "../assets/assets-clicker/rel-removebg-preview.png";
 import rerImg from "../assets/assets-clicker/rer__2_-removebg-preview.png";
 import lisImg from "../assets/assets-clicker/lisossomo-removebg-preview.png";
+import centImg from "../assets/assets-clicker/centriolo.png";
+import perImg from "../assets/assets-clicker/peroxissomo.png";
 
 const initialConstructions = [
   {
@@ -51,7 +53,7 @@ const initialConstructions = [
     value: 25,
     bonus: 1,
     legacyBonus: 1,
-    image: "../assets/react.svg",
+    image: centImg,
   },
   {
     id: 3,
@@ -91,7 +93,7 @@ const initialConstructions = [
     value: 200,
     bonus: 1,
     legacyBonus: 1,
-    image: "../assets/react.svg",
+    image: perImg,
   },
   {
     id: 7,
@@ -634,7 +636,7 @@ function CellGame() {
     (stat) => stat.id === "PASSIVE_INCOME"
   );
   const legacyStat = gameStats.find((stat) => stat.id === "LEGACY_POINTS");
-  const legacyPointsBaseCost = 1e9; // 1 bilhão
+  const legacyPointsBaseCost = 100; // 1 bilhão
   const nextLegacyPoinsCost =
     Math.pow(legacyStat.totAmount + 1, 3) * legacyPointsBaseCost;
 
@@ -1027,12 +1029,9 @@ function CellGame() {
               <p>Custo de 1 ponto de legacy {nextLegacyPoinsCost}</p>
             </button>
           </div>
-          <div className="celula">
+          <div className="cell-button">
             <button onClick={handleCellClick}>
-              <p>Clique em mim!</p>
-              <span>
-                +{clickStat.value * clickStat.bonus * clickStat.legacyBonus}
-              </span>
+              <img src={ATPImg} alt="Célula ATP" className="cell-image" />
             </button>
           </div>
           <hr />
@@ -1040,7 +1039,7 @@ function CellGame() {
             atp={atpStat.value}
             items={constructions}
             onBuy={buyConstruction}
-            gameStats={gameStats}
+            bonus={bonusCell}
           />
           <hr />
           <Upgrades

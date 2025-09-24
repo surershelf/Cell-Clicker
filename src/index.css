@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
 :root {
-  font-family: "Pixelify Sans", "Silkscreen", "Press Start 2P", system-ui;
+  font-family: "Silkscreen", "Pixelify Sans", "Press Start 2P", system-ui;
   line-height: 1.5;
   font-weight: 400;
 
