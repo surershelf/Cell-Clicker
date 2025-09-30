@@ -4,6 +4,7 @@ import Constructions from "./Constructions";
 import LegacyTree from "./LegacyTree";
 import ATPImg from "../assets/assets-clicker/ATP.png";
 import citImg from "../assets/assets-clicker/citoplasma-removebg-preview.png";
+import dnaImg from "../assets/assets-clicker/dna.png";
 import riboImg from "../assets/assets-clicker/ribossomo.png";
 import mitImg from "../assets/assets-clicker/mitocondria-removebg-preview.png";
 import CGImg from "../assets/assets-clicker/complexo-de-golgi-removebg-preview.png";
@@ -1003,7 +1004,11 @@ function CellGame() {
                   left: bonusCell.position.left,
                 }}
               >
-                🧬
+                <img
+                  src={dnaImg}
+                  alt="Imagem do DNA"
+                  className="cell-bonus-image"
+                />
               </button>
             )}
           </div>
@@ -1029,7 +1034,7 @@ function CellGame() {
               <p>Custo de 1 ponto de legacy {nextLegacyPoinsCost}</p>
             </button>
           </div>
-          <div className="cell-button">
+          <div>
             <button className="cell-button" onClick={handleCellClick}>
               <img src={ATPImg} alt="Célula ATP" className="cell-image" />
             </button>

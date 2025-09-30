@@ -106,3 +106,24 @@ button.cell-button:focus,
 button.cell-button:focus-visible {
   outline: none;
 }
+.cell-bonus-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+  padding: 0;
+}
+.cell-bonus-button:focus,
+.cell-bonus-button:focus-visible {
+  outline: none;
+}
+.cell-bonus-button:active {
+  transform: scale(0.95);
+}
+.cell-bonus-image {
+  width: 80px;
+  height: 80px;
+  -webkit-user-drag: none;
+  user-select: none;
+  rotate: 25deg;
+}
