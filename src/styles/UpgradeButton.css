@@ -1,0 +1,55 @@
+.upgrade-button {
+  width: 64px; /* Largura do quadrado */
+  height: 64px; /* Altura do quadrado */
+  margin: 4px;
+  border: 2px solid #555;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  position: relative; /* Essencial para o tooltip */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upgrade-button.disabled {
+  background-color: #222;
+  color: #777;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.upgrade-icon {
+  font-size: 2em;
+}
+
+.upgrade-button .tooltip {
+  visibility: hidden;
+  width: 250px;
+  background-color: #1a1a1a;
+  color: #fff;
+  text-align: left;
+  border-radius: 4px;
+  padding: 12px;
+  border: 2px solid #555;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 10;
+  bottom: 105%;
+  left: 50%;
+  margin-left: -125px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none; /* Evita que o tooltip bloqueie o hover de outros botões */
+}
+
+.upgrade-button .tooltip-price {
+  margin-top: 8px;
+  color: #a0a0a0;
+  font-weight: bold;
+}
+
+.upgrade-button:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}

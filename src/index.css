@@ -127,3 +127,8 @@ button.cell-button:focus-visible {
   user-select: none;
   rotate: 25deg;
 }
+.upgrades-grid {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os botões quebrem para a linha seguinte */
+  justify-content: center; /* Centraliza os botões */
+}
