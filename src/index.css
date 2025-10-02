@@ -132,3 +132,97 @@ button.cell-button:focus-visible {
   flex-wrap: wrap; /* Permite que os botões quebrem para a linha seguinte */
   justify-content: center; /* Centraliza os botões */
 }
+/* O contentor principal da grelha */
+
+.game-layout {
+  display: grid;
+  /* A MUDANÇA ESTÁ AQUI: Três colunas (esquerda, meio, direita) */
+  grid-template-columns: 1fr 1.8fr 1fr;
+  gap: 10px;
+  width: 100%;
+  max-width: 1400px;
+  height: 90vh;
+  align-items: stretch;
+}
+/* Coluna da Esquerda (Principal) */
+.main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espaço entre os elementos internos */
+  border: 2px solid #555; /* Borda da coluna */
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.stats-display {
+  text-align: center; /* Centraliza o texto das estatísticas */
+  flex-shrink: 0; /* Impede que esta área encolha */
+}
+
+.clicker-area {
+  flex-grow: 1; /* Faz esta área ocupar todo o espaço vertical livre */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-box {
+  border: 2px solid #555;
+  background-color: #1a1a1a;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: left;
+  flex-shrink: 0; /* Impede que esta área encolha */
+}
+
+/* Coluna da Direita (Loja) */
+.store-column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #1a1a1a;
+  padding: 15px;
+  border-radius: 8px;
+  overflow-y: auto; /* Adiciona scroll se o conteúdo for maior que a coluna */
+  border: 2px solid #555; /* Borda da coluna */
+}
+
+.legacy-section {
+  border-bottom: 2px solid #555; /* Linha separadora para o Legacy */
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+}
+
+.legacy-section button {
+  width: 100%;
+  border: 2px solid #8a2be2; /* Cor roxa para destaque */
+  background-color: transparent;
+}
+/* Adicione isto ao final do seu index.css */
+
+/* Nova coluna da esquerda para as estatísticas */
+.stats-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #555;
+  border-radius: 8px;
+}
+
+.atp-counter {
+  font-size: 2.5em; /* Aumenta o tamanho do contador de ATP */
+  color: #b2c729; /* Cor amarela para destaque */
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+/* Nova caixa para as mensagens aleatórias */
+.flavor-text-box {
+  padding: 10px;
+  border: 2px solid #555;
+  border-radius: 8px;
+  background-color: #1a1a1a;
+  text-align: center;
+  height: 80px; /* Altura fixa para a barra de mensagens */
+}

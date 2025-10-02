@@ -14,6 +14,7 @@ import rerImg from "../assets/assets-clicker/rer__2_-removebg-preview.png";
 import lisImg from "../assets/assets-clicker/lisossomo-removebg-preview.png";
 import centImg from "../assets/assets-clicker/centriolo.png";
 import perImg from "../assets/assets-clicker/peroxissomo.png";
+import LegacyButton from "./LegacyButton";
 
 const initialConstructions = [
   {
@@ -988,73 +989,95 @@ function CellGame() {
     }, 5000);
     return () => clearInterval(intervalId);
   }, []);
-
   return (
     <>
       {currentView === "game" ? (
-        <div className="game-container">
-          <div className="cell-bonus">
-            {bonusCell.isVisible && (
-              <button
-                onClick={handleBonusCellClick}
-                className="cell-bonus-button"
-                style={{
-                  position: "absolute",
-                  top: bonusCell.position.top,
-                  left: bonusCell.position.left,
-                }}
-              >
+        <div className="game-layout">
+          {/* --- NOVA COLUNA DA ESQUERDA (APENAS STATS) --- */}
+          <div className="stats-column">
+            <h2>ATP TOTAIS</h2>
+            <p className="atp-counter">{atpStat.value.toFixed(0)}</p>
+            <p>
+              {(
+                passiveIncomeStat.value *
+                passiveIncomeStat.bonus *
+                passiveIncomeStat.legacyBonus
+              ).toFixed(1)}{" "}
+              ATP por segundo
+            </p>
+            <div className="clicker-area">
+              <button onClick={handleCellClick} className="cell-button">
                 <img
-                  src={dnaImg}
-                  alt="Imagem do DNA"
-                  className="cell-bonus-image"
+                  src={ATPImg}
+                  alt="Molécula de ATP"
+                  className="cell-image"
                 />
+                <span className="click-value">
+                  +{clickStat.value * clickStat.bonus * clickStat.legacyBonus}
+                </span>
               </button>
-            )}
+            </div>
           </div>
-          <h1>🔬 Cell Clicker 🔬</h1>
-          <h2>Energia (ATP): {atpStat.value.toFixed(0)}</h2>
-          <h4>Total de ATP de todo jogo: {atpStat.totAmount.toFixed(0)}</h4>
-          <p>
-            {(
-              passiveIncomeStat.value *
-              passiveIncomeStat.bonus *
-              passiveIncomeStat.legacyBonus
-            ).toFixed(1)}{" "}
-            ATP por segundo
-          </p>
 
-          <div>
-            <hr />
-            <button onClick={handleLegacyReset}>
-              <h2>Legado</h2>
+          {/* --- COLUNA DO MEIO (CLICKER E INFORMAÇÕES) --- */}
+
+          <div className="main-column">
+            {/* Espaço para as mensagens aleatórias */}
+            <div className="flavor-text-box">
+              <p>Mensagens aleatórias aparecerão aqui...</p>
+            </div>
+            <div className="legacy-section">
+              <LegacyButton
+                atp={atpStat.totAmount}
+                costNextPoint={nextLegacyPoinsCost}
+                actualPoints={legacyStat.value}
+                onLegacyReset={handleLegacyReset}
+              />
+            </div>
+
+            <div className="info-box">
+              <h4>Informações da Célula</h4>
               <p>
-                Reinicie o jogo para ganhar {legacyStat.value} pontos de legacy
+                Aqui vamos adicionar o contexto sobre as construções e upgrades
+                que você comprar.
               </p>
-              <p>Custo de 1 ponto de legacy {nextLegacyPoinsCost}</p>
-            </button>
+            </div>
           </div>
-          <div>
-            <button className="cell-button" onClick={handleCellClick}>
-              <img src={ATPImg} alt="Célula ATP" className="cell-image" />
-            </button>
+
+          {/* --- COLUNA DA DIREITA (LOJA - Continua igual) --- */}
+          <div className="store-column">
+            <Upgrades
+              atp={atpStat.value}
+              constructions={constructions}
+              tieredUpgrades={tieredUpgrades}
+              onBuyTieredUpgrades={buyTieredUpgrades}
+              passiveIncomeStat={passiveIncomeStat}
+              clickStat={clickStat}
+            />
+            <Constructions
+              atp={atpStat.value}
+              items={constructions}
+              onBuy={buyConstruction}
+            />
           </div>
-          <hr />
-          <Constructions
-            atp={atpStat.value}
-            items={constructions}
-            onBuy={buyConstruction}
-            bonus={bonusCell}
-          />
-          <hr />
-          <Upgrades
-            atp={atpStat.value}
-            constructions={constructions}
-            tieredUpgrades={tieredUpgrades}
-            onBuyTieredUpgrades={buyTieredUpgrades}
-            passiveIncomeStat={passiveIncomeStat}
-            clickStat={clickStat}
-          />
+          {/* --- Célula Bónus (continua a flutuar sobre tudo) --- */}
+          {bonusCell.isVisible && (
+            <button
+              onClick={handleBonusCellClick}
+              className="cell-bonus-button" // Renomeei para não confundir com o cell-button
+              style={{
+                position: "absolute",
+                top: bonusCell.position.top,
+                left: bonusCell.position.left,
+              }}
+            >
+              <img
+                src={dnaImg}
+                alt="Imagem do DNA"
+                className="cell-bonus-image"
+              />
+            </button>
+          )}
         </div>
       ) : (
         <LegacyTree
