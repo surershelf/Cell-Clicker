@@ -1,48 +1,44 @@
-/* Ficheiro: LegacyButton.css */
-
+/* --- Estilos de Botão de Legacy --- */
 .legacy-button {
   width: 100%;
   height: 50px;
-  border: 2px solid #8a2be2; /* Borda roxa para destacar */
-  background-color: #333; /* Fundo escuro para a barra vazia */
-  color: white;
+  border: 2px solid var(--legacy-border);
+  background-color: var(--column-bg);
+  color: var(--text-color);
   cursor: pointer;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Garante que a barra de progresso não "vaze" */
   padding: 0;
 }
 
-/* A barra de progresso que enche */
 .progress-bar {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  background-color: #6a1b9a; /* Um roxo mais claro para o preenchimento */
-  transition: width 0.5s ease-in-out; /* Animação suave ao progredir */
+  background-color: var(--legacy-border);
+  opacity: 0.5;
+  transition: width 0.5s ease-in-out;
 }
 
-/* O texto que fica por cima da barra */
 .button-text {
-  position: relative; /* ou z-index: 1; para garantir que fica por cima */
+  position: relative;
   z-index: 1;
   font-size: 1.2em;
   font-weight: bold;
 }
 
-/* O tooltip é muito parecido com os outros que já fizemos */
 .legacy-button .tooltip {
   visibility: hidden;
   width: 280px;
-  background-color: #1a1a1a;
-  color: #fff;
+  background-color: var(--background-color);
+  color: var(--text-color);
   text-align: left;
   border-radius: 4px;
   padding: 12px;
-  border: 2px solid #555;
+  border: 2px solid var(--border-color);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   position: absolute;
   z-index: 10;
@@ -57,10 +53,11 @@
 
 .legacy-button .tooltip-action {
   margin-top: 10px;
-  color: #a0a0a0;
+  color: var(--secondary-accent);
 }
 
 .legacy-button:hover .tooltip {
   visibility: visible;
   opacity: 1;
+  overflow-y: none;
 }

@@ -26,6 +26,7 @@ const initialConstructions = [
     bonus: 1,
     legacyBonus: 1,
     image: riboImg,
+    desc: "Responsável pela síntese de proteínas. Atua como a 'fábrica' da célula, lendo o RNA mensageiro e montando as cadeias de aminoácidos que formarão as proteínas essenciais para a célula.",
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ const initialConstructions = [
     bonus: 1,
     legacyBonus: 1,
     image: mitImg,
+    desc: "A 'usina de energia' da célula. Realiza a respiração celular para gerar a maior parte do ATP (energia) que a célula precisa para suas atividades.",
   },
   {
     id: 8,
@@ -46,16 +48,18 @@ const initialConstructions = [
     bonus: 1,
     legacyBonus: 1,
     image: CGImg,
+    desc: "Funciona como o 'centro de distribuição' da célula. Modifica, empacota e envia proteínas e lipídios para seus destinos corretos, dentro ou fora da célula.",
   },
   {
     id: 9,
-    name: "Centriolo",
+    name: "Centríolo",
     count: 0,
     price: 1000,
     value: 25,
     bonus: 1,
     legacyBonus: 1,
     image: centImg,
+    desc: "Essencial para a divisão celular em células animais. Organiza os microtúbulos que formam o fuso mitótico, garantindo a separação correta dos cromossomos.",
   },
   {
     id: 3,
@@ -66,6 +70,7 @@ const initialConstructions = [
     bonus: 1,
     legacyBonus: 1,
     image: relImg,
+    desc: "O Retículo Endoplasmático Liso (REL) atua na síntese de lipídios, como hormônios esteroides, e na desintoxicação da célula, metabolizando substâncias nocivas.",
   },
   {
     id: 4,
@@ -76,6 +81,7 @@ const initialConstructions = [
     bonus: 1,
     legacyBonus: 1,
     image: rerImg,
+    desc: "O Retículo Endoplasmático Rugoso (RER) possui ribossomos aderidos e participa da síntese e modificação de proteínas que serão exportadas ou inseridas em membranas.",
   },
   {
     id: 5,
@@ -86,6 +92,7 @@ const initialConstructions = [
     bonus: 1,
     legacyBonus: 1,
     image: lisImg,
+    desc: "Atua como o 'sistema digestivo' da célula. Contém enzimas que quebram partículas de alimentos, organelas velhas e agentes invasores.",
   },
   {
     id: 6,
@@ -96,6 +103,7 @@ const initialConstructions = [
     bonus: 1,
     legacyBonus: 1,
     image: perImg,
+    desc: "Pequenas vesículas que contêm enzimas para a quebra de ácidos graxos e aminoácidos. Neutralizam substâncias tóxicas, como o peróxido de hidrogênio (água oxigenada).",
   },
   {
     id: 7,
@@ -106,6 +114,7 @@ const initialConstructions = [
     bonus: 1,
     legacyBonus: 1,
     image: nucImg,
+    desc: "O 'centro de controle' da célula. Contém o material genético (DNA) e comanda todas as atividades celulares, incluindo crescimento, metabolismo e reprodução.",
   },
 ];
 const initialTieredUpgrades = [
@@ -1012,14 +1021,11 @@ function CellGame() {
                   alt="Molécula de ATP"
                   className="cell-image"
                 />
-                <span className="click-value">
-                  +{clickStat.value * clickStat.bonus * clickStat.legacyBonus}
-                </span>
               </button>
             </div>
           </div>
 
-          {/* --- COLUNA DO MEIO (CLICKER E INFORMAÇÕES) --- */}
+          {/* --- COLUNA DO MEIO (INFORMAÇÕES) --- */}
 
           <div className="main-column">
             {/* Espaço para as mensagens aleatórias */}

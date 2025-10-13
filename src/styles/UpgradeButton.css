@@ -1,22 +1,26 @@
 .upgrade-button {
-  width: 64px; /* Largura do quadrado */
-  height: 64px; /* Altura do quadrado */
+  width: 64px;
+  height: 64px;
   margin: 4px;
-  border: 2px solid #555;
-  background-color: #333;
-  color: white;
+  border: 2px solid var(--border-color);
+  background-color: var(--interactive-bg);
+  color: var(--text-color);
   cursor: pointer;
-  position: relative; /* Essencial para o tooltip */
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+/* Adicionado para levantar o botão ativo */
+.upgrade-button:hover {
+  z-index: 11;
+}
 
 .upgrade-button.disabled {
-  background-color: #222;
-  color: #777;
+  background-color: var(--column-bg);
+  color: var(--border-color);
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .upgrade-icon {
@@ -26,26 +30,26 @@
 .upgrade-button .tooltip {
   visibility: hidden;
   width: 250px;
-  background-color: #1a1a1a;
-  color: #fff;
+  background-color: var(--background-color);
+  color: var(--text-color);
   text-align: left;
   border-radius: 4px;
   padding: 12px;
-  border: 2px solid #555;
+  border: 2px solid var(--border-color);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   position: absolute;
   z-index: 10;
-  bottom: 105%;
+  top: 105%;
   left: 50%;
   margin-left: -125px;
   opacity: 0;
   transition: opacity 0.2s;
-  pointer-events: none; /* Evita que o tooltip bloqueie o hover de outros botões */
+  pointer-events: none;
 }
 
 .upgrade-button .tooltip-price {
   margin-top: 8px;
-  color: #a0a0a0;
+  color: var(--secondary-accent);
   font-weight: bold;
 }
 

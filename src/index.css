@@ -1,20 +1,32 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
+
 :root {
+  /* Paleta 8: Dossel da Selva */
+  --background-color: #2d4221;
+  --text-color: #f1fbe7;
+  --primary-accent: #aacc00;
+  --secondary-accent: #ffc600;
+  --border-color: #556b2f;
+  --interactive-bg: #415d2f;
+  --interactive-hover-border: #c4e538;
+  --legacy-border: #8b4513;
+  --column-bg: #395128;
+  color-scheme: dark;
+
+  /* --- Configurações Gerais --- */
   font-family: "Silkscreen", "Pixelify Sans", "Press Start 2P", system-ui;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  color: var(--text-color);
+  background-color: var(--background-color);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 button,
 input,
 textarea {
@@ -23,11 +35,11 @@ textarea {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--secondary-accent);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--primary-accent);
 }
 
 body {
@@ -41,64 +53,45 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: var(--secondary-accent);
 }
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid var(--border-color);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--interactive-bg);
+  color: var(--text-color);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--interactive-hover-border);
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
 button.cell-button {
-  /* Força a remoção do fundo e da borda da regra geral */
   background: transparent !important;
   border: none !important;
-
-  /* Remove o padding da regra geral */
   padding: 0 !important;
-
   cursor: pointer;
   transition: transform 0.1s;
-
-  /* --- Outros --- */
-  position: relative; /* Necessário para posicionar o texto do valor do clique */
+  position: relative;
 }
 
-/* Esta regra continua igual, para o efeito de clique */
 button.cell-button:active {
   transform: scale(0.95);
 }
 
-/* A imagem continua a definir o tamanho final */
 .cell-image {
-  width: 200px; /* Você pode mudar este valor para o tamanho que quiser */
+  width: 200px;
   height: auto;
-  /* IMPORTANTE: Adicione esta linha para evitar que a imagem arraste */
   -webkit-user-drag: none;
   user-select: none;
 }
@@ -129,14 +122,12 @@ button.cell-button:focus-visible {
 }
 .upgrades-grid {
   display: flex;
-  flex-wrap: wrap; /* Permite que os botões quebrem para a linha seguinte */
-  justify-content: center; /* Centraliza os botões */
+  flex-wrap: wrap;
+  justify-content: center;
 }
-/* O contentor principal da grelha */
 
 .game-layout {
   display: grid;
-  /* A MUDANÇA ESTÁ AQUI: Três colunas (esquerda, meio, direita) */
   grid-template-columns: 1fr 1.8fr 1fr;
   gap: 10px;
   width: 100%;
@@ -144,85 +135,105 @@ button.cell-button:focus-visible {
   height: 90vh;
   align-items: stretch;
 }
-/* Coluna da Esquerda (Principal) */
+
 .main-column {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Espaço entre os elementos internos */
-  border: 2px solid #555; /* Borda da coluna */
+  gap: 20px;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   padding: 20px;
+  background-color: var(--column-bg);
 }
 
 .stats-display {
-  text-align: center; /* Centraliza o texto das estatísticas */
-  flex-shrink: 0; /* Impede que esta área encolha */
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .clicker-area {
-  flex-grow: 1; /* Faz esta área ocupar todo o espaço vertical livre */
+  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .info-box {
-  border: 2px solid #555;
-  background-color: #1a1a1a;
+  border: 2px solid var(--border-color);
+  background-color: var(--interactive-bg);
   padding: 15px;
   border-radius: 8px;
   text-align: left;
-  flex-shrink: 0; /* Impede que esta área encolha */
+  flex-shrink: 0;
 }
 
-/* Coluna da Direita (Loja) */
 .store-column {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  background-color: #1a1a1a;
+  background-color: var(--column-bg);
   padding: 15px;
   border-radius: 8px;
-  overflow-y: auto; /* Adiciona scroll se o conteúdo for maior que a coluna */
-  border: 2px solid #555; /* Borda da coluna */
+  overflow-y: scroll;
+  border: 2px solid var(--border-color);
 }
 
 .legacy-section {
-  border-bottom: 2px solid #555; /* Linha separadora para o Legacy */
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 15px;
   margin-bottom: 10px;
 }
 
 .legacy-section button {
   width: 100%;
-  border: 2px solid #8a2be2; /* Cor roxa para destaque */
+  border: 2px solid var(--legacy-border);
   background-color: transparent;
+  color: var(--legacy-border);
 }
-/* Adicione isto ao final do seu index.css */
 
-/* Nova coluna da esquerda para as estatísticas */
 .stats-column {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  border: 2px solid #555;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
+  background-color: var(--column-bg);
 }
 
 .atp-counter {
-  font-size: 2.5em; /* Aumenta o tamanho do contador de ATP */
-  color: #b2c729; /* Cor amarela para destaque */
+  font-size: 2.5em;
+  color: var(--primary-accent);
   font-weight: bold;
   margin: 10px 0;
+  text-shadow: 0 0 8px var(--secondary-accent);
 }
 
-/* Nova caixa para as mensagens aleatórias */
 .flavor-text-box {
   padding: 10px;
-  border: 2px solid #555;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
-  background-color: #1a1a1a;
+  background-color: var(--interactive-bg);
   text-align: center;
-  height: 80px; /* Altura fixa para a barra de mensagens */
+  height: 80px;
+}
+
+/* --- Estilização da Scrollbar --- */
+.store-column::-webkit-scrollbar {
+  width: 12px;
+}
+
+.store-column::-webkit-scrollbar-track {
+  background: var(--column-bg);
+  border-radius: 10px;
+}
+
+.store-column::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 10px;
+  border: 3px solid var(--column-bg);
+}
+
+.store-column::-webkit-scrollbar-thumb:hover {
+  background-color: var(--interactive-hover-border);
 }

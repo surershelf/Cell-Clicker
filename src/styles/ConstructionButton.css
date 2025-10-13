@@ -1,34 +1,36 @@
+/* --- Estilos de Botões de Construção --- */
 .construction-button {
   display: flex;
   align-items: center;
   width: 100%;
   padding: 8px;
   margin-bottom: 5px;
-  border: 2px solid #555;
-  background-color: #333;
-  color: white;
+  border: 2px solid var(--border-color);
+  background-color: var(--interactive-bg);
+  color: var(--text-color);
   cursor: pointer;
-  position: relative; /* Essencial para o tooltip */
+  position: relative;
 }
 
 .construction-button.disabled {
-  background-color: #222;
-  color: #777;
+  background-color: var(--column-bg);
+  color: var(--border-color);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .construction-image {
   width: 48px;
   height: 48px;
   margin-right: 12px;
-  object-fit: contain; /* Garante que a imagem não fique distorcida */
+  object-fit: contain;
 }
 
 .construction-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  flex-grow: 1; /* Faz esta div ocupar o espaço restante */
+  flex-grow: 1;
 }
 
 .construction-name {
@@ -37,36 +39,31 @@
 }
 
 .construction-price {
-  color: #a0a0a0;
+  color: var(--secondary-accent);
 }
 
 .construction-count {
   font-size: 2em;
   font-weight: bold;
   padding: 0 15px;
-  color: #eee;
+  color: var(--text-color);
 }
 
-/* A Mágica do Tooltip */
-.tooltip {
+.construction-button .tooltip {
   visibility: hidden;
-  width: 280px; /* Um pouco mais largo */
-  background-color: #1a1a1a; /* Um fundo escuro, mas não preto total */
-  color: #fff;
+  width: 280px;
+  background-color: var(--background-color);
+  color: var(--text-color);
   text-align: left;
-  border-radius: 4px; /* Menos arredondado para um look mais "bloco" */
+  border-radius: 4px;
   padding: 12px;
-  border: 2px solid #555; /* Borda igual à dos botões */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidade */
-
-  /* Posicionamento */
+  border: 2px solid var(--border-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   position: absolute;
   z-index: 1;
-  bottom: 105%;
+  top: 105%;
   left: 50%;
-  margin-left: -140px; /* Metade da nova largura */
-
-  /* Animação */
+  margin-left: -140px;
   opacity: 0;
   transition: opacity 0.2s;
 }
